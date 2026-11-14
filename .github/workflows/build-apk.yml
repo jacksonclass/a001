@@ -1,6 +1,8 @@
 name: Build WorkMoney APK
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [main]
   push:
     branches: [main, time-earnings-app]
     paths:
@@ -24,8 +26,8 @@ jobs:
           gradle-version: '8.10.2'
       - name: Install Android SDK
         run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
-      - name: Compile APK
-        run: gradle --no-daemon --stacktrace :app:assembleDebug
+      - name: Test wage math and compile APK
+        run: gradle --no-daemon --stacktrace :app:testDebugUnitTest :app:assembleDebug
       - uses: actions/upload-artifact@v4
         with:
           name: WorkMoneyTimer-debug-apk

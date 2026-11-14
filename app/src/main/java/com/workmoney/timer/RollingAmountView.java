@@ -23,7 +23,7 @@ public final class RollingAmountView extends View {
 
     private void init() {
         paint.setColor(Color.rgb(237, 255, 248));
-        paint.setTypeface(Typeface.create("sans-serif-condensed", Typeface.BOLD));
+        paint.setTypeface(Typeface.create("monospace", Typeface.BOLD));
         paint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 49,
             getResources().getDisplayMetrics()));
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
