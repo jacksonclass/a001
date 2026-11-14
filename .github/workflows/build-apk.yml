@@ -26,7 +26,17 @@ jobs:
         with:
           gradle-version: '8.10.2'
       - name: Install Android SDK
-        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+        shell: bash
+        run: |
+          SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-/usr/local/lib/android/sdk}}"
+          SDKMANAGER="$(find "$SDK_ROOT" -type f -name sdkmanager 2>/dev/null | head -n 1)"
+          if [[ -z "$SDKMANAGER" ]]; then
+            echo 'Android SDK command-line tools not found.'
+            find "$SDK_ROOT" -maxdepth 3 -type d | head -n 30
+            exit 1
+          fi
+          echo "Using $SDKMANAGER"
+          "$SDKMANAGER" 'platforms;android-35' 'build-tools;35.0.0'
       - name: Test wage math and compile APK
         run: gradle --no-daemon --stacktrace :app:testDebugUnitTest :app:assembleDebug
       - uses: actions/upload-artifact@v4
